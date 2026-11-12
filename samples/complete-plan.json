@@ -1,0 +1,14 @@
+{
+  "plan_type": "switchover",
+  "members": [
+    {"id": "db-system", "role": "database"},
+    {"id": "app-tier", "role": "compute"},
+    {"id": "bucket-replica", "role": "storage"}
+  ],
+  "steps": [
+    {"id": "s1", "name": "precheck-connectivity", "is_precheck": true, "members": []},
+    {"id": "s2", "name": "switch-db-role", "members": ["db-system"], "depends_on": ["s1"]},
+    {"id": "s3", "name": "promote-bucket-replica", "members": ["bucket-replica"], "depends_on": ["s2"]},
+    {"id": "s4", "name": "start-app-tier", "members": ["app-tier"], "depends_on": ["s3"]}
+  ]
+}
